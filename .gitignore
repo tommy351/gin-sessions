@@ -1,0 +1,3 @@
+*.log
+Godeps/*
+!Godeps/Godeps.json

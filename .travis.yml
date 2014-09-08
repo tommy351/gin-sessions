@@ -1,0 +1,13 @@
+language: go
+
+go:
+  - 1.3
+  - tip
+
+before_install:
+  - export PATH=/home/travis/gopath/bin:$PATH
+
+install: make deps
+
+script:
+  - godep go test
