@@ -26,6 +26,7 @@ func main(){
     g.GET("/set", func(c *gin.Context){
         session := sessions.Get(c)
         session.Set("hello", "world")
+        session.Save()
     })
     
     g.GET("/get", func(c *gin.Context){
