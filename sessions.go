@@ -3,23 +3,10 @@ package sessions
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
-	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
 )
 
-type Store interface {
-	sessions.Store
-}
-
-type Options struct {
-	Path     string
-	Domain   string
-	MaxAge   int
-	Secure   bool
-	HttpOnly bool
-}
-
+// Session is an interface that stores values and configurations for a session.
 type Session interface {
 	Get(key interface{}) interface{}
 	Set(key interface{}, val interface{})
@@ -31,19 +18,18 @@ type Session interface {
 	Options(Options)
 }
 
-func Sessions(name string, store Store) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		s := &session{
-			name:    name,
-			request: c.Request,
-			writer:  c.Writer,
-			store:   store,
-		}
+// Store is an interface for custom session stores.
+type Store interface {
+	sessions.Store
+}
 
-		c.Set("session", s)
-		defer context.Clear(c.Request)
-		c.Next()
-	}
+// Options stores configurations of a session
+type Options struct {
+	Path     string
+	Domain   string
+	MaxAge   int
+	Secure   bool
+	HttpOnly bool
 }
 
 type session struct {

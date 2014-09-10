@@ -2,11 +2,13 @@ package sessions
 
 import "github.com/gorilla/sessions"
 
+// CookieStore stores sessions using secure cookies.
 type CookieStore interface {
 	Store
 	Options(Options)
 }
 
+// NewCookieStore creates a new CookieStore.
 func NewCookieStore(keyPairs ...[]byte) CookieStore {
 	return &cookieStore{sessions.NewCookieStore(keyPairs...)}
 }

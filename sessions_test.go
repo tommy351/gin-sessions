@@ -45,14 +45,14 @@ func request(server *gin.Engine, options requestOptions) *httptest.ResponseRecor
 func newServer() *gin.Engine {
 	g := gin.New()
 	store := NewCookieStore([]byte("secret123"))
-	g.Use(Sessions("my_session", store))
+	g.Use(Middleware("my_session", store))
 
 	return g
 }
 
 func sessionContext(fn func(session Session)) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		session := c.MustGet("session").(Session)
+		session := Get(c)
 		fn(session)
 	}
 }
@@ -110,7 +110,7 @@ func TestOptions(t *testing.T) {
 	store.Options(Options{
 		Domain: "maji.moe",
 	})
-	g.Use(Sessions("my_session", store))
+	g.Use(Middleware("my_session", store))
 
 	g.GET("/", sessionContext(func(session Session) {
 		session.Set("hello", "world")
